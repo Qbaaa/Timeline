@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    mysql:
+        image: mysql:8.0.31
+        container_name: mysql
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: timeline-db
+            MYSQL_ROOT_PASSWORD: S3cret
+            MYSQL_PASSWORD: An0thrS3crt
+            MYSQL_USER: laravel
+        volumes:
+            - ./docker/mysql/dump-timeline.sql:/docker-entrypoint-initdb.d/init.sql
+            - dbdata:/var/lib/mysql/
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    dbdata:
+        driver: local
